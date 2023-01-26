@@ -1,6 +1,5 @@
 import numpy as np
 import datetime
-import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
@@ -9,18 +8,13 @@ from sklearn.metrics import mean_squared_error
 import warnings
 warnings.simplefilter('ignore', np.RankWarning)
 
-m = 500000
-T = 1
-N = 50
-dt = T/N
+# parameters for Black-Scholes model
 S0 = 100
-V0 = 0.02497
-r = 0.02
-sigma = 0.559
-kappa = 1.22136
-theta = 0.03
-rho = -0.9
-K = 105
+r = 0.1
+sigma = 0.2
+T = 1 
+N = 20
+m = 500000
 
 def BS_stockprice(S0, r, sigma, T, N, m):
     #    function: simulate m samples of a Black-Scholes paths at (n+1) equidistant times
@@ -109,6 +103,33 @@ def option_pricing_tsitsiklis(V, C, payoffs):
 
 
 # Longstaff-Schwartz
+def option_pricing_longstaff_schwartz(stockprices, payoffs, deg):
+    dt = T/N
+    itm = (payoffs>0)
+    
+    # initiate stopping time and expected continuation value for all paths at expiration
+    tau = np.full(m, N)
+    c = np.zeros(m)
+    
+    # backward iteration
+    for t in range(N, 0, -1):
+        itm_paths = np.where(itm[:, t-1] == True)[0]
+        
+        # discounted payoff
+        discounted_h_itm = payoffs[itm_paths, tau[itm_paths]] * np.exp(-r * (tau[itm_paths]-t+1) * dt)
+        S_itm = stockprices[itm_paths, t-1]
+        
+        # regression
+        beta = np.polyfit(S_itm, discounted_h_itm, deg)
+        c[itm_paths] = np.polyval(beta, S_itm)
+
+        h_itm = payoffs[itm_paths, t-1]
+        optimal_stopping_paths = itm_paths[np.where(h_itm > c[itm_paths])[0]]
+        tau[optimal_stopping_paths] = t-1
+        
+    final_payoff = payoffs[np.arange(m), tau] * np.exp(-r * tau * dt)
+    return np.average(final_payoff), 1.96*np.std(final_payoff)/np.sqrt(m)  # Monte-Carlo Error
+
 def option_pricing_longstaff_bayer(stockprices, payoffs, deg):
     itm = (payoffs > 0)
 
@@ -171,17 +192,3 @@ def longstaff_schwartz_multivariate_polynomial_reg(stockprices, volatilities, pa
         # stopping_set[update_optimal_stopping] = stopping_set[update_optimal_stopping] - 1
         stopping_set[update_optimal_stopping] = t
     return np.average(payoffs[np.arange(m), stopping_set] * np.exp(-r * stopping_set * dt))
-
-m = 500000
-T = 1
-N = 50
-dt = T/N
-S0 = 100
-V0 = 0.02497
-r = 0.02
-sigma = 0.559
-kappa = 1.22136
-theta = 0.03
-rho = -0.9
-K = 105
-
