@@ -1,6 +1,8 @@
 numpy
 matplotlib
 datetime
-scikit-sklearn
 scipy
 orthopy
+psutil
+quadpy
+sklearn
