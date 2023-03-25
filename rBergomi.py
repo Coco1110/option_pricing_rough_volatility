@@ -1,10 +1,5 @@
 import numpy as np
 from scipy.special import gamma, hyp2f1, beta
-import matplotlib.pyplot as plt
-
-import warnings
-warnings.simplefilter('ignore', np.RankWarning)
-
 
 def sqrt_cov_matrix(T, time_steps, H):
     """

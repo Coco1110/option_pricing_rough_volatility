@@ -3,9 +3,6 @@ from scipy.special import gamma
 import orthopy
 import quadpy
 
-import warnings
-warnings.simplefilter('ignore', np.RankWarning)
-
 # Gaussian quadrature rule
 def exp_underflow(x):
     """

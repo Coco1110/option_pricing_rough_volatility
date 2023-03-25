@@ -1,4 +1,6 @@
 import numpy as np
+import warnings
+warnings.simplefilter('ignore', np.RankWarning)
 
 def option_pricing_longstaff_schwartz(T, M, time_steps, r, stockprices, strike_price, deg):
     '''

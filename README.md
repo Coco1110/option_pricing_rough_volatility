@@ -1,2 +1,2 @@
-# Applying Longstaff Schwartz methode on Bermudan option pricing 
+# Applying Longstaff Schwartz method on Bermudan option pricing 
  

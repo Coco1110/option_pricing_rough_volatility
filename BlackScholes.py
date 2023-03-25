@@ -1,8 +1,9 @@
 import numpy as np
-def BS_stockprice(S0, r, sigma, T, time_steps, M):
+def bs_stockprice(S0, r, sigma, T, time_steps, M):
     '''
     Return: M stock price samples using Black Scholes model
     Params: T: maturity
+            S0: spot price
             sigma: volatility constant
             M: number of simulated paths
             r: interest rate
