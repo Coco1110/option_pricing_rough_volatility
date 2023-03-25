@@ -1,2 +1,2 @@
-# masterthesis_code
+# Applying Longstaff Schwartz methode on Bermudan option pricing 
  
