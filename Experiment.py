@@ -6,7 +6,7 @@ import classicHeston as heston
 
 S0 = 100
 r = 0.05
-sigma = 0.5
+sigma = 0.3
 M = 100
 time_steps = 100
 stock_prices = bs.bs_stockprice(S0, r, sigma, 1, time_steps, M)
