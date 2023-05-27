@@ -1,2 +1,2 @@
-# Applying Longstaff Schwartz method on Bermudan option pricing 
+# Option Pricing with rough Bergomi model using Longstaff-Schwartz method
  
